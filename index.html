@@ -83,10 +83,6 @@
         <img src="wink.jpeg" alt="Wink" class="w-16 h-16 rounded object-cover bg-white p-1">
         <span class="mt-2 text-sm font-semibold">Wink</span>
       </a>
-      <a href="#" onclick="showPriceList('alight')" class="flex flex-col items-center p-4 rounded-lg bg-black bg-opacity-50 hover:scale-105 transition">
-        <img src="am.png" alt="Alight Motion" class="w-16 h-16 rounded object-cover bg-white p-1">
-        <span class="mt-2 text-sm font-semibold">Alight Motion</span>
-      </a>
     </div>
   </section>
 
@@ -111,7 +107,7 @@
   </div>
 
   <script>
-    const adminNumber = "6281234567890"; // ganti dengan nomor WA admin
+    const adminNumber = "6282363792698"; // nomor WA admin
 
     const priceData = {
       mlbb: {
@@ -169,13 +165,6 @@
           { img: "wink.jpeg", name: "Private 7 Day (acc seller)", price: "6.500" },
           { img: "wink.jpeg", name: "Private 7 Day (acc buyer)", price: "4.500" },
         ]
-      },
-      alight: {
-        title: "🎥 Price List Alight Motion",
-        items: [
-          { img: "am.png", name: "Private 1 Tahun (Buyer)", price: "2.000" },
-          { img: "am.png", name: "Private 1 Tahun (Seller)", price: "4.500" },
-        ]
       }
     };
 
@@ -231,14 +220,14 @@
         return;
       }
 
-      const message = `Halo Admin, saya ingin membeli:\n\n` +
-                      `Game/App: ${selectedCategory.toUpperCase()}\n` +
-                      `Item: ${selectedItem.name}\n` +
-                      `Harga: Rp ${selectedItem.price}\n` +
-                      `ID/Username: ${playerId}\n\n` +
+      const message = `Halo Admin, saya ingin membeli:%0A%0A` +
+                      `Game/App: ${selectedCategory.toUpperCase()}%0A` +
+                      `Item: ${selectedItem.name}%0A` +
+                      `Harga: Rp ${selectedItem.price}%0A` +
+                      `ID/Username: ${playerId}%0A%0A` +
                       `Tolong segera diproses 🙏`;
 
-      const url = `https://wa.me/6285176807025}`;
+      const url = `https://wa.me/${adminNumber}?text=${message}`;
       window.open(url, "_blank");
 
       closePopup();
