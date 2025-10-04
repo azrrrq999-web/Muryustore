@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Launcher Web</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Animasi fade in/out */
+    .fade {
+      opacity: 0;
+      transform: scale(0.95);
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+    .fade-in {
+      opacity: 1 !important;
+      transform: scale(1) !important;
+    }
+    .fade-out {
+      opacity: 0 !important;
+      transform: scale(0.95) !important;
+    }
+
+    /* Popup background */
+    #popup {
+      display: none;
+    }
+    #popup.active {
+      display: flex;
+    }
+  </style>
+</head>
+<body class="text-white min-h-screen font-sans bg-cover bg-center bg-fixed" 
+      style="background-image: url('bg.jpg');">
+
+  <!-- Header -->
+  <header class="flex items-center justify-between px-6 py-4 bg-black bg-opacity-80 shadow-lg">
+    <div class="flex items-center gap-3">
+      <img src="Quality Restoration-Ultra HD-Gambar WhatsApp 2025-10-04 pukul 05.53.08_9571d184.jpeg" alt="Logo" class="w-10 h-10 rounded object-cover object-center shadow-md">
+      <h1 id="store-title" class="text-xl font-bold">Muryuu MLBB Store</h1>
+    </div>
+    <div class="flex items-center gap-3">
+      <select id="language-select" 
+              class="px-3 py-2 rounded-lg bg-gray-200 text-black text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
+        <option value="id">Indonesia - IDR</option>
+        <option value="en">English - USD</option>
+        <option value="jp">日本語 - JPY</option>
+        <option value="kr">한국어 - KRW</option>
+        <option value="ar">العربية - SAR</option>
+      </select>
+    </div>
+  </header>
+
+  <!-- MENU KATEGORI -->
+  <section class="container mx-auto p-6">
+    <h2 class="text-lg font-bold mb-4">Pilih Kategori</h2>
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+      <a href="#" onclick="showPriceList('mlbb')" class="flex flex-col items-center p-4 rounded-lg bg-black bg-opacity-50 hover:scale-105 transition">
+        <img src="ml.webp" alt="Mobile Legend" class="w-16 h-16 rounded object-cover bg-white p-1">
+        <span class="mt-2 text-sm font-semibold">Mobile Legend</span>
+      </a>
+      <a href="#" onclick="showPriceList('bloodstrike')" class="flex flex-col items-center p-4 rounded-lg bg-black bg-opacity-50 hover:scale-105 transition">
+        <img src="bs.jpg" alt="Blood Strike" class="w-16 h-16 rounded object-cover bg-white p-1">
+        <span class="mt-2 text-sm font-semibold">Blood Strike</span>
+      </a>
+      <a href="#" onclick="showPriceList('roblox')" class="flex flex-col items-center p-4 rounded-lg bg-black bg-opacity-50 hover:scale-105 transition">
+        <img src="roblox.jpg" alt="Roblox" class="w-16 h-16 rounded object-cover bg-white p-1">
+        <span class="mt-2 text-sm font-semibold">Roblox</span>
+      </a>
+      <a href="#" onclick="showPriceList('capcut')" class="flex flex-col items-center p-4 rounded-lg bg-black bg-opacity-50 hover:scale-105 transition">
+        <img src="ccp.png" alt="CapCut" class="w-16 h-16 rounded object-cover bg-white p-1">
+        <span class="mt-2 text-sm font-semibold">CapCut</span>
+      </a>
+      <a href="#" onclick="showPriceList('canva')" class="flex flex-col items-center p-4 rounded-lg bg-black bg-opacity-50 hover:scale-105 transition">
+        <img src="canva.png" alt="Canva" class="w-16 h-16 rounded object-cover bg-white p-1">
+        <span class="mt-2 text-sm font-semibold">Canva</span>
+      </a>
+      <a href="#" onclick="showPriceList('netflix')" class="flex flex-col items-center p-4 rounded-lg bg-black bg-opacity-50 hover:scale-105 transition">
+        <img src="netflix.png" alt="Netflix" class="w-16 h-16 rounded object-cover bg-white p-1">
+        <span class="mt-2 text-sm font-semibold">Netflix</span>
+      </a>
+      <a href="#" onclick="showPriceList('wink')" class="flex flex-col items-center p-4 rounded-lg bg-black bg-opacity-50 hover:scale-105 transition">
+        <img src="wink.jpeg" alt="Wink" class="w-16 h-16 rounded object-cover bg-white p-1">
+        <span class="mt-2 text-sm font-semibold">Wink</span>
+      </a>
+      <a href="#" onclick="showPriceList('alight')" class="flex flex-col items-center p-4 rounded-lg bg-black bg-opacity-50 hover:scale-105 transition">
+        <img src="am.png" alt="Alight Motion" class="w-16 h-16 rounded object-cover bg-white p-1">
+        <span class="mt-2 text-sm font-semibold">Alight Motion</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- PRICE LIST -->
+  <section id="price-list" class="hidden container mx-auto p-6 fade">
+    <h2 id="price-title" class="text-lg font-bold mb-4"></h2>
+    <div id="price-items" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4"></div>
+  </section>
+
+  <!-- POPUP INPUT -->
+  <div id="popup" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50">
+    <div class="bg-gray-900 p-6 rounded-lg shadow-lg w-80">
+      <h3 class="text-lg font-bold mb-3">Masukkan Data</h3>
+      <p id="popup-item" class="text-sm mb-3 text-gray-300"></p>
+      <input id="player-id" type="text" placeholder="Masukkan ID / Username + Server"
+             class="w-full p-2 rounded bg-gray-800 text-white mb-3 focus:outline-none focus:ring-2 focus:ring-blue-500">
+      <div class="flex justify-end gap-2">
+        <button onclick="closePopup()" class="px-3 py-1 bg-gray-600 rounded hover:bg-gray-700">Batal</button>
+        <button onclick="sendToWhatsApp()" class="px-3 py-1 bg-green-600 rounded hover:bg-green-700">Kirim</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const adminNumber = "6281234567890"; // ganti dengan nomor WA admin
+
+    const priceData = {
+      mlbb: {
+        title: "💎 Price List WDP (Mobile Legend)",
+        items: [
+          { img: "wdp.webp", name: "WDP 🇲🇨 (Indo)", price: "26.500" },
+          { img: "wdp.webp", name: "WDP 🇧🇷 (Brazil)", price: "19.900" },
+          { img: "wdp.webp", name: "WDP 🇲🇾 (Malay)", price: "32.500" },
+          { img: "wdp.webp", name: "WDP 🇵🇭 (PH)", price: "25.000" },
+          { img: "wdp.webp", name: "WDP 🌐 (Global)", price: "25.000" },
+        ]
+      },
+      bloodstrike: {
+        title: "⏣ Price List Gold (Blood Strike)",
+        items: [
+          { img: "gold.png", name: "⏣ 100 Gold", price: "11.300" },
+          { img: "gold.png", name: "⏣ 200 Gold", price: "22.000" },
+          { img: "gold.png", name: "⏣ 300 Gold", price: "32.200" },
+        ]
+      },
+      roblox: {
+        title: "🕹️ Price List Robux",
+        items: [
+          { img: "roblox.jpg", name: "⏣ 80 Robux", price: "16.900" },
+          { img: "roblox.jpg", name: "⏣ 160 Robux", price: "31.900" },
+          { img: "roblox.jpg", name: "⏣ 240 Robux", price: "46.900" },
+        ]
+      },
+      capcut: {
+        title: "🎬 Price List CapCut",
+        items: [
+          { img: "ccp.png", name: "1 Bulan (share 3u)", price: "6.500" },
+          { img: "ccp.png", name: "1 Bulan (private fullgar)", price: "14.500" },
+          { img: "ccp.png", name: "7 Hari (share 3u)", price: "3.500" },
+        ]
+      },
+      canva: {
+        title: "🎨 Price List Canva",
+        items: [
+          { img: "canva.png", name: "Member", price: "1.500" },
+          { img: "canva.png", name: "Admin", price: "9.000" },
+        ]
+      },
+      netflix: {
+        title: "📺 Price List Netflix",
+        items: [
+          { img: "netflix.png", name: "1p1u (3 hari)", price: "6.000" },
+          { img: "netflix.png", name: "1p1u (7 hari)", price: "10.500" },
+          { img: "netflix.png", name: "1p1u (1 bulan)", price: "23.500" },
+        ]
+      },
+      wink: {
+        title: "✨ Price List Wink",
+        items: [
+          { img: "wink.jpeg", name: "Private 7 Day (acc seller)", price: "6.500" },
+          { img: "wink.jpeg", name: "Private 7 Day (acc buyer)", price: "4.500" },
+        ]
+      },
+      alight: {
+        title: "🎥 Price List Alight Motion",
+        items: [
+          { img: "am.png", name: "Private 1 Tahun (Buyer)", price: "2.000" },
+          { img: "am.png", name: "Private 1 Tahun (Seller)", price: "4.500" },
+        ]
+      }
+    };
+
+    let selectedItem = null;
+    let selectedCategory = null;
+
+    function showPriceList(category) {
+      const container = document.getElementById("price-list");
+      const title = document.getElementById("price-title");
+      const itemsContainer = document.getElementById("price-items");
+
+      if (!priceData[category]) {
+        container.classList.add("hidden");
+        return;
+      }
+
+      title.textContent = priceData[category].title;
+      itemsContainer.innerHTML = "";
+
+      priceData[category].items.forEach(item => {
+        const card = document.createElement("div");
+        card.className = "flex flex-col items-center p-3 bg-black bg-opacity-60 rounded-lg";
+        card.innerHTML = `
+          <img src="${item.img}" alt="${item.name}" class="w-12 h-12 mb-2">
+          <span class="text-xs text-center">${item.name}</span>
+          <span class="text-yellow-400 font-bold">${item.price}</span>
+          <button onclick="openPopup('${category}', '${item.name}', '${item.price}')" 
+                  class="mt-2 px-3 py-1 text-xs rounded bg-blue-600 hover:bg-blue-700">Beli</button>
+        `;
+        itemsContainer.appendChild(card);
+      });
+
+      container.classList.remove("hidden");
+      container.classList.add("fade-in");
+    }
+
+    function openPopup(category, name, price) {
+      selectedItem = { name, price };
+      selectedCategory = category;
+      document.getElementById("popup-item").textContent = `${name} - Rp ${price}`;
+      document.getElementById("player-id").value = "";
+      document.getElementById("popup").classList.add("active");
+    }
+
+    function closePopup() {
+      document.getElementById("popup").classList.remove("active");
+    }
+
+    function sendToWhatsApp() {
+      const playerId = document.getElementById("player-id").value.trim();
+      if (!playerId) {
+        alert("Harap isi ID / Username Anda!");
+        return;
+      }
+
+      const message = `Halo Admin, saya ingin membeli:\n\n` +
+                      `Game/App: ${selectedCategory.toUpperCase()}\n` +
+                      `Item: ${selectedItem.name}\n` +
+                      `Harga: Rp ${selectedItem.price}\n` +
+                      `ID/Username: ${playerId}\n\n` +
+                      `Tolong segera diproses 🙏`;
+
+      const url = `https://wa.me/6285176807025}`;
+      window.open(url, "_blank");
+
+      closePopup();
+    }
+  </script>
+
+</body>
+</html>
