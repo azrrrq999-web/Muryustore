@@ -101,13 +101,17 @@
              class="w-full p-2 rounded bg-gray-800 text-white mb-3 focus:outline-none focus:ring-2 focus:ring-blue-500">
       <div class="flex justify-end gap-2">
         <button onclick="closePopup()" class="px-3 py-1 bg-gray-600 rounded hover:bg-gray-700">Batal</button>
-        <button onclick="sendToWhatsApp()" class="px-3 py-1 bg-green-600 rounded hover:bg-green-700">Kirim</button>
+        <button onclick="sendToWhatsApp('admin1')" class="px-3 py-1 bg-green-600 rounded hover:bg-green-700">Admin 1</button>
+        <button onclick="sendToWhatsApp('admin2')" class="px-3 py-1 bg-blue-600 rounded hover:bg-blue-700">Admin 2</button>
       </div>
     </div>
   </div>
 
   <script>
-    const adminNumber = "6282363792698"; // nomor WA admin
+    const adminNumbers = {
+      admin1: "6282372307710", // nomor admin 1
+      admin2: "6282168801528"  // nomor admin 2
+    };
 
     const priceData = {
       mlbb: {
@@ -213,12 +217,14 @@
       document.getElementById("popup").classList.remove("active");
     }
 
-    function sendToWhatsApp() {
+    function sendToWhatsApp(adminKey) {
       const playerId = document.getElementById("player-id").value.trim();
       if (!playerId) {
         alert("Harap isi ID / Username Anda!");
         return;
       }
+
+      const adminNumber = adminNumbers[adminKey];
 
       const message = `Halo Admin, saya ingin membeli:%0A%0A` +
                       `Game/App: ${selectedCategory.toUpperCase()}%0A` +
@@ -236,10 +242,3 @@
 
 </body>
 </html>
-
-    }
-  </script>
-
-</body>
-</html>
-
